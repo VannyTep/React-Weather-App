@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from "react";
+import { getData } from "./js/getData";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [data, setData] = useState(null);
+  const [cityInput, setCityInput] = useState("");
+  const [submittedCity, setSubmittedCity] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmittedCity(cityInput);
+  };
+
+  useEffect(() => {
+    if (submittedCity) {
+      getData(cityInput)
+        .then((res) => {
+          setData(res.data);
+          console.log(res.data);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [submittedCity]);
 
   return (
     <>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          id="city"
+          value={cityInput}
+          onChange={(e) => setCityInput(e.target.value)}
+        />
+        <input type="submit" value={"Submit"} />
+      </form>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {data && (
+          <div>
+            <h2>Weather Data</h2>
+            <p>City: {data.name}</p>
+            <p>Temperature: {data.main.temp}</p>
+            <p>Weather: {data.weather[0].main}</p>
+          </div>
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
