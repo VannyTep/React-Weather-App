@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getData } from "./js/getData";
+import "./styles/App.css";
 
 function App() {
   const [data, setData] = useState(null);
@@ -24,27 +25,54 @@ function App() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          id="city"
-          value={cityInput}
-          onChange={(e) => setCityInput(e.target.value)}
-        />
-        <input type="submit" value={"Submit"} />
+      <form onSubmit={handleSubmit} id="city_form">
+        <div className="input_container">
+          <input
+            type="text"
+            id="city_input"
+            placeholder="Enter your city"
+            value={cityInput}
+            onChange={(e) => setCityInput(e.target.value)}
+          />
+          <input type="submit" value={"Submit"} />
+        </div>
+        <div className="weather_data">
+          {data && (
+            <div>
+              <h2>Weather Data</h2>
+              <p>City: {data.name}</p>
+              <p>Temperature: {data.main.temp}</p>
+              <p>Weather: {data.weather[0].main}</p>
+            </div>
+          )}
+        </div>
       </form>
-      <div>
-        {data && (
-          <div>
-            <h2>Weather Data</h2>
-            <p>City: {data.name}</p>
-            <p>Temperature: {data.main.temp}</p>
-            <p>Weather: {data.weather[0].main}</p>
-          </div>
-        )}
-      </div>
     </>
-  );
+  )
+ 
+  // return (
+  //   <>
+  //     <form onSubmit={handleSubmit}>
+  //       <input
+  //         type="text"
+  //         id="city"
+  //         value={cityInput}
+  //         onChange={(e) => setCityInput(e.target.value)}
+  //       />
+  //       <input type="submit" value={"Submit"} />
+  //     </form>
+  //     <div>
+  //       {data && (
+  //         <div>
+  //           <h2>Weather Data</h2>
+  //           <p>City: {data.name}</p>
+  //           <p>Temperature: {data.main.temp}</p>
+  //           <p>Weather: {data.weather[0].main}</p>
+  //         </div>
+  //       )}
+  //     </div>
+  //   </>
+  // );
 }
 
 export default App;
